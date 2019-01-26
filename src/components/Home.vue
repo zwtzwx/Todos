@@ -1,56 +1,56 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <transition name="todo">
+      <h1 v-show="show" class="title" @click="goTodos">Todos</h1>
+    </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 
-export default Vue.extend({
-  props: ['msg']
-})
+@Component
+export default class Home extends Vue{
+  show: boolean = false;
+  mounted () {
+    this.show = true;
+  }
+  goTodos() {
+    this.$router.push('todos');
+  }
+}
 </script>
+<style lang="scss" scoped>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+@keyframes bounce-in {
+  0% {
+    transform: rotate(90deg);
+    transform: translateY(10px);
+  }
+  50% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.todo-enter-active {
+  animation: bounce-in .5s;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.todo-leave-active {
+  animation: bounce-in .5s reverse;
 }
-a {
-  color: #42b983;
+.title {
+  color: #fff;
+  font-size: 100px;
+  text-align: center;
+  width: 400px;
+  margin: 0 auto;
+  text-shadow: lightcyan 3px 5px ;
+  cursor: pointer;
+  margin-top: 300px;
 }
 </style>
+
+
