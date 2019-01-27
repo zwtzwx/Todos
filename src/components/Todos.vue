@@ -12,7 +12,7 @@
         <el-tab-pane label="待完成">
           <div class="todo-content"> 
             <div class="needs" v-for="(item, index) in needs.slice(needsMin, needsMin + 8)" :key="index">
-              <el-checkbox v-model="item.isChecked" @change="updateTodo(index)"></el-checkbox>
+              <el-checkbox v-model="item.isChecked" @change="updateTodo(index + needsMin)"></el-checkbox>
               <span class="content">{{ item.content }}</span>
             </div>
           </div>
@@ -27,10 +27,10 @@
 
         <el-tab-pane label="已完成">
           <div class="todo-content">
-            <div class="already" v-for="(item, index) in alread" :key="index">
+            <div class="already" v-for="(item, index) in alread.slice(alreadyMin, alreadyMin + 8)" :key="index">
               <el-checkbox v-model="item.isChecked" disabled></el-checkbox>
               <span class="content">{{ item.content }}</span>
-              <el-button type="danger" class="delete" round size="mini" @click="deleteTodo(index)">删除</el-button>
+              <el-button type="danger" class="delete" round size="mini" @click="deleteTodo(index + alreadyMin)">删除</el-button>
             </div>
           </div>
 
@@ -38,6 +38,7 @@
           <el-pagination 
           layout="prev, pager, next" 
           :total="alread.length"
+          :page-size="8"
           @current-change="pageChange(2, $event)"></el-pagination>
         </el-tab-pane>
       </el-tabs>
@@ -86,10 +87,16 @@ export default class MyTodos extends Vue{
     // 从待完成到已完成
     this.alread.push(this.needs[index])
     this.needs = (this.needs.slice(0, index)).concat(this.needs.slice(index + 1))
+    if (!this.needs[this.needsMin]) {
+      this.needsMin = this.needsMin - 8 < 0 ? 0 : this.needsMin - 8
+    }
   }
   // 删除便签
   deleteTodo(index: number) {
     this.alread = (this.alread.slice(0, index)).concat(this.alread.slice(index + 1))
+    if (!this.alread[this.needsMin]) {
+      this.alreadyMin = this.alreadyMin - 8 < 0 ? 0 : this.alreadyMin - 8
+    }
   }
   pageChange(item: number, page: number) {
     // 待完成的分页
