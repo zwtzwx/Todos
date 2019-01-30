@@ -29,7 +29,7 @@
           <div class="todo-content">
             <div class="already" v-for="(item, index) in alread.slice(alreadyMin, alreadyMin + 8)" :key="index">
               <el-checkbox v-model="item.isChecked" disabled></el-checkbox>
-              <span class="content">{{ item.content }}</span>
+              <span class="content already-content" >{{ item.content }}</span>
               <el-button type="danger" class="delete" round size="mini" @click="deleteTodo(index + alreadyMin)">删除</el-button>
             </div>
           </div>
@@ -86,14 +86,16 @@ export default class MyTodos extends Vue{
   updateTodo(index: number) {
     // 从待完成到已完成
     this.alread.push(this.needs[index])
-    this.needs = (this.needs.slice(0, index)).concat(this.needs.slice(index + 1))
+    // this.needs = (this.needs.slice(0, index)).concat(this.needs.slice(index + 1))
+    this.needs.splice(index, 1)
     if (!this.needs[this.needsMin]) {
       this.needsMin = this.needsMin - 8 < 0 ? 0 : this.needsMin - 8
     }
   }
   // 删除便签
   deleteTodo(index: number) {
-    this.alread = (this.alread.slice(0, index)).concat(this.alread.slice(index + 1))
+    // this.alread = (this.alread.slice(0, index)).concat(this.alread.slice(index + 1))
+    this.alread.splice(index, 1)
     if (!this.alread[this.needsMin]) {
       this.alreadyMin = this.alreadyMin - 8 < 0 ? 0 : this.alreadyMin - 8
     }
@@ -103,7 +105,6 @@ export default class MyTodos extends Vue{
     if (item === 1) {
       
       this.needsMin = (page - 1) * 8;
-      console.log(this.needsMin);
       
     } else if (item === 2) {
       this.alreadyMin = (page - 1) * 8;
@@ -148,14 +149,18 @@ $boder-color: #999;
   }
   .already  {
     color: $boder-color;
-    text-decoration: line-through;
+    
     border-color: $boder-color;
   }
   .content {
     padding-left: 10px;
   }
+  .already-content {
+    text-decoration: line-through;
+  }
   .delete {
     float: right;
+    padding: 3px 15px;
   }
   .todo-content {
     height: 400px;
